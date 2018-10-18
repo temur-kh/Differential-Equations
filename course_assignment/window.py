@@ -8,6 +8,7 @@ e = 2.71828182846
 
 
 class Variant:
+    # initial conditions of variant #25
     x0 = 0.
     y0 = 2.
     x = 6.4
@@ -15,6 +16,12 @@ class Variant:
 
     @staticmethod
     def func(x, y):
+        """
+        Function of the o.d.e. of variant #25
+        :param x: x-value
+        :param y: y-value
+        :return: result of function
+        """
         try:
             return x * (y ** 2) - 3 * x * y
         except OverflowError:
@@ -22,9 +29,19 @@ class Variant:
 
     @staticmethod
     def solution(x_list):
+        """
+        Get the list of x-values and output y-values using analytical solution
+        :param x_list: x-values
+        :return: y-values
+        """
         def solve(x_i):
+            """
+            Analytical solution to the o.d.e.
+            :param x_i: x-value
+            :return: y-value
+            """
             try:
-                return 6.0 / (2 + e ** (3 * (x_i ** 2) / 2.0))  # analytical solution
+                return 6.0 / (2 + e ** (3 * (x_i ** 2) / 2.0))
             except OverflowError:
                 return 0.0
 
@@ -38,12 +55,12 @@ class Plot:
     def draw(self, x0=Variant.x0, y0=Variant.y0, x=Variant.x, h=Variant.h, ax=None):
         """
         Draw the graph of function using given parameters.
-        :param x0:
-        :param y0:
-        :param x:
-        :param h:
-        :param ax:
-        :return:
+        :param x0: initial position on x-axis
+        :param y0: f(x0)
+        :param x: final position on x-axis
+        :param h: a grid step
+        :param ax: object of class matplotlib.axes.Axes
+        :return: None
         """
         print("Differential Eq: y'=xy^2-3xy")
         print('Initial condition: y({})={}'.format(x0, y0))
@@ -87,6 +104,7 @@ class Plot:
 class Window:
     def __init__(self, master):
         """
+        Creates the main window with all widgets needed.
         :param master: the window where the content should be placed
         """
         self.root = master
@@ -119,7 +137,7 @@ class Window:
         y0.insert(tk.END, str(Variant.y0))
         y0.pack()
 
-        x_label = tk.Label(bar, text="x")
+        x_label = tk.Label(bar, text="X")
         x_label.pack()
 
         x = tk.Entry(bar, width=30)

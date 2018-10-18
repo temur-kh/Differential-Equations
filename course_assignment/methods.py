@@ -2,6 +2,15 @@ import numpy as np
 
 
 def euler_method(func, x0, y0, h, X):
+    """
+    Euler method
+    :param func: the function part of o.d.e.
+    :param x0: initial position on x-axis
+    :param y0: f(x0)
+    :param h: a grid step
+    :param X: final position on x-axis
+    :return: a list of x-values, a list of corresponding y-values found numerically
+    """
     x_list = [x0]
     y_list = [y0]
     for _ in np.arange(x0 + h, X + h, h):
@@ -13,6 +22,15 @@ def euler_method(func, x0, y0, h, X):
 
 
 def improved_euler_method(func, x0, y0, h, X):
+    """
+    Improved Euler Method
+    :param func: the function part of o.d.e.
+    :param x0: initial position on x-axis
+    :param y0: f(x0)
+    :param h: a grid step
+    :param X: final position on x-axis
+    :return: a list of x-values, a list of corresponding y-values found numerically
+    """
     x_list = [x0]
     y_list = [y0]
     for _ in np.arange(x0 + h, X + h, h):
@@ -25,6 +43,15 @@ def improved_euler_method(func, x0, y0, h, X):
 
 
 def runge_kuffa_method(func, x0, y0, h, X):
+    """
+    Runge-Kuffa Method
+    :param func: the function part of o.d.e.
+    :param x0: initial position on x-axis
+    :param y0: f(x0)
+    :param h: a grid step
+    :param X: final position on x-axis
+    :return: a list of x-values, a list of corresponding y-values found numerically
+    """
     x_list = [x0]
     y_list = [y0]
     for _ in np.arange(x0 + h, X + h, h):
