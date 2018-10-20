@@ -2,6 +2,7 @@ from methods import *
 import pandas as pd
 import matplotlib.pyplot as plt
 from variant import Variant
+from collections import OrderedDict
 
 class Plot:
     @staticmethod
@@ -21,7 +22,7 @@ class Plot:
         print('Grid step: {}'.format(h))
         print()
 
-        dic = dict()
+        dic = OrderedDict()
         x_list, y_list = euler_method(Variant.func, x0, y0, h, x)
         dic['x'] = x_list
 
@@ -45,12 +46,3 @@ class Plot:
         df.plot(x='x', y='Improved Euler Method', color='Red', ax=ax)
         df.plot(x='x', y='Runge-Kuffa Method', color='LightGreen', ax=ax)
         return df
-
-    def redraw(self, x0, y0, x, h, canvas):
-        x0_new, y0_new, x_new, h_new = float(x0.get()), float(y0.get()), float(
-            x.get()), float(h.get())
-        if x0_new < x_new and (x_new - x0_new) / h_new <= 10000:
-            plt.gca().clear()
-            df = self.draw(x0_new, y0_new, x_new, h_new, plt.gca())
-            canvas.draw()
-            return df

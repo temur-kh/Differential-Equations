@@ -5,6 +5,7 @@ from tkinter_tabs import Tab, TabBar
 from sys import exit
 from variant import Variant
 from plot import Plot
+from pandastable import Table, TableModel
 
 
 class Window:
@@ -18,7 +19,41 @@ class Window:
         fun_label = tk.Label(self.root, text="Differential Equation: y'=xy^2-3xy", font=("Courier", 30))
         fun_label.pack()
 
-        # Create form below
+        # Create the form
+        self.create_form()
+
+        # Create the graph tab
+        graph_tab = Tab(self.root, 'graph')
+
+        # Draw a graph and put its figure into a canvas
+        self.plot = Plot()
+        df = self.plot.draw()
+        self.canvas = FigureCanvasTkAgg(plt.gcf(), master=graph_tab)
+        self.canvas.draw()
+        self.canvas.get_tk_widget().pack(side=tk.TOP,
+                                         fill=tk.BOTH,
+                                         expand=tk.YES)
+
+        # Create the table tab
+        table_tab = Tab(self.root, 'table')
+        self.table = Table(table_tab, dataframe=df, showtoolbar=True)
+        self.table.show()
+
+        bar.add(graph_tab)
+        bar.add(table_tab)
+        bar.show()
+
+    def update(self, x0, y0, x, h):
+        x0_new, y0_new, x_new, h_new = float(x0.get()), float(y0.get()), float(
+            x.get()), float(h.get())
+        if x0_new < x_new and (x_new - x0_new) / h_new <= 10000:
+            plt.gca().clear()
+            df = self.plot.draw(x0_new, y0_new, x_new, h_new, plt.gca())
+            self.canvas.draw()
+            self.table.updateModel(TableModel(df))
+            self.table.show()
+
+    def create_form(self):
         form = tk.Frame(self.root)
 
         x0_label = tk.Label(form, text="x0")
@@ -51,7 +86,7 @@ class Window:
 
         button = tk.Button(master=form,
                            text='Plot',
-                           command=lambda: self.plot.redraw(x0, y0, x, h, canvas),
+                           command=lambda: self.update(x0, y0, x, h),
                            bg="white")
         button.pack()
 
@@ -60,27 +95,8 @@ class Window:
                            command=exit,
                            bg="white")
         button.pack()
-        # Print author's name
+
         author = tk.Label(form, text="Author: Temur Kholmatov B17-5")
         author.pack(side=tk.RIGHT, fill=tk.X)
 
         form.pack(side=tk.BOTTOM, fill=tk.X)
-
-        # Create graph tab
-        graph = Tab(self.root, 'graph')
-
-        # Draw graph and put its figure into a canvas
-        self.plot = Plot()
-        self.plot.draw()
-        canvas = FigureCanvasTkAgg(plt.gcf(), master=graph)
-        canvas.draw()
-        canvas.get_tk_widget().pack(side=tk.TOP,
-                                    fill=tk.BOTH,
-                                    expand=tk.YES)
-
-        # Create table tab
-        table = Tab(self.root, 'table')
-
-        bar.add(graph)
-        bar.add(table)
-        bar.show()
