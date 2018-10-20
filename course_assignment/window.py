@@ -35,7 +35,8 @@ class ApplicationWindow:
 
         # Create the table tab and put a table inside it
         table_tab = Tab(self.root, 'table')
-        self.table = Table(table_tab, dataframe=df, showtoolbar=True)
+        width, height = self.canvas.get_width_height()
+        self.table = Table(table_tab, dataframe=df, width=width-60, height=height-20, editable=False, cellwidth=188)
         self.table.show()
 
         bar.add(graph_tab)
