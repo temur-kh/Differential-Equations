@@ -16,7 +16,7 @@ class ApplicationWindow:
         """
         self.root = master
         bar = TabBar(self.root, "graph")
-        fun_label = tk.Label(self.root, text="Differential Equation: y'=xy^2-3xy", font=("Courier", 30))
+        fun_label = tk.Label(self.root, text="Differential Equation: y'=xy^2-3xy", font=("Times New Roman", 30))
         fun_label.pack()
 
         self.def_config = {
@@ -58,6 +58,7 @@ class ApplicationWindow:
         table_tab = Tab(self.root, 'table')
         width, height = self.canvas1.get_width_height()
         self.table = Table(table_tab, dataframe=df, width=width-60, height=height-20, editable=False, cellwidth=188)
+        self.table.colselectedcolor = self.table.rowselectedcolor = '#40A9CF'
         self.table.show()
 
         self.set_background([self.root, fun_label, bar, graph_tab, errors_tab, table_tab])
