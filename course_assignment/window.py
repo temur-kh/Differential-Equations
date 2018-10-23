@@ -19,6 +19,16 @@ class ApplicationWindow:
         fun_label = tk.Label(self.root, text="Differential Equation: y'=xy^2-3xy", font=("Courier", 30))
         fun_label.pack()
 
+        self.def_config = {
+            'background': 'white',
+        }
+
+        self.btn_config = {
+            'background': 'white',
+            'highlightbackground': '#40A9CF',
+            'foreground': 'black',
+        }
+
         # Create the form
         self.create_form()
 
@@ -50,9 +60,11 @@ class ApplicationWindow:
         self.table = Table(table_tab, dataframe=df, width=width-60, height=height-20, editable=False, cellwidth=188)
         self.table.show()
 
-        bar.add(graph_tab)
-        bar.add(errors_tab)
-        bar.add(table_tab)
+        self.set_background([self.root, fun_label, bar, graph_tab, errors_tab, table_tab])
+
+        bar.add(graph_tab, self.btn_config)
+        bar.add(errors_tab, self.btn_config)
+        bar.add(table_tab, self.btn_config)
         bar.show()
 
     def update(self, x0, y0, x, h):
@@ -98,19 +110,24 @@ class ApplicationWindow:
         h.insert(tk.END, str(Variant.h))
         h.pack()
 
-        button = tk.Button(master=form,
-                           text='Plot',
-                           command=lambda: self.update(x0, y0, x, h),
-                           bg="white")
-        button.pack()
+        btn_plot = tk.Button(master=form, text='Plot', command=lambda: self.update(x0, y0, x, h))
+        btn_plot.pack()
 
-        button = tk.Button(master=form,
-                           text='Quit',
-                           command=exit,
-                           bg="white")
-        button.pack()
+        btn_quit = tk.Button(master=form, text='Quit', command=exit)
+        btn_quit.pack()
 
         author = tk.Label(form, text="Author: Temur Kholmatov B17-5")
         author.pack(side=tk.RIGHT, fill=tk.X)
 
+        self.set_background([form, x0_label, y0_label, x_label, h_label, author])
+        self.set_border_background([x0, y0, x, h, btn_plot, btn_quit])
+
         form.pack(side=tk.BOTTOM, fill=tk.X)
+
+    def set_background(self, widgets):
+        for widget in widgets:
+            widget.configure(**self.def_config)
+
+    def set_border_background(self, widgets):
+        for widget in widgets:
+            widget.configure(**self.btn_config)
