@@ -20,6 +20,8 @@ root
 -->Tab    (Place holder for content)
     -->content (content of the tab; parent=Tab)
 etc.
+
+The module was updated by Temur Kholmatov
 '''
 
 from tkinter import *
@@ -48,12 +50,14 @@ class TabBar(Frame):
         self.pack(side=TOP, expand=YES, fill=X)
         self.switch_tab(self.init_name or self.tabs.keys()[-1])  # switch the tab to the first tab
 
-    def add(self, tab):
+    def add(self, tab, btn_config=None):
         tab.pack_forget()  # hide the tab on init
 
         self.tabs[tab.tab_name] = tab  # add it to the list of tabs
         b = Button(self, text=tab.tab_name, relief=BASE,  # basic button stuff
                    command=(lambda name=tab.tab_name: self.switch_tab(name)))  # set the command to switch tabs
+        if btn_config:
+            b.config(**btn_config)
         b.pack(side=LEFT)  # pack the button to the left mose of self
         self.buttons[tab.tab_name] = b  # add it to the list of buttons
 
