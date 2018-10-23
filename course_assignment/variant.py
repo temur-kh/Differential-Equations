@@ -22,24 +22,27 @@ class Variant:
             return float('inf')
 
     @staticmethod
-    def solution(x_list):
+    def solution(x_list, new_x0=x0, new_y0=y0):
         """
         Get the list of x-values and output y-values using analytical solution
         :param x_list: x-values
+        :param new_x0:
+        :param new_y0:
         :return: y-values
         """
-        def solve(x_i):
+        def solve(x_i, c):
             """
             Analytical solution to the o.d.e.
             :param x_i: x-value
             :return: y-value
             """
             try:
-                return 6.0 / (2 + e ** (3 * (x_i ** 2) / 2.0))
+                return 3.0 / (1 + c * e ** (3 * (x_i ** 2) / 2.0))
             except OverflowError:
                 return 0.0
 
+        c = (3.0 / new_y0 - 1) / e ** (3 * (new_x0 ** 2) / 2.0)
         y_list = []
         for x in x_list:
-            y_list.append(solve(x))
+            y_list.append(solve(x, c))
         return y_list

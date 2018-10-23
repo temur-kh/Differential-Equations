@@ -21,14 +21,14 @@ def draw_graph(ax, x0=Variant.x0, y0=Variant.y0, x=Variant.x, h=Variant.h, graph
     dic['x'] = x_list
 
     if graph_type:
-        dic['Analytical Solution'] = Variant.solution(x_list)
+        dic['Analytical Solution'] = Variant.solution(x_list, x0, y0)
         dic['Euler Method'] = y_list
         _, y_list = improved_euler_method(Variant.func, x0, y0, h, x)
         dic['Improved Euler Method'] = y_list
         _, y_list = runge_kuffa_method(Variant.func, x0, y0, h, x)
         dic['Runge-Kuffa Method'] = y_list
     else:
-        analytical_solution = Variant.solution(x_list)
+        analytical_solution = Variant.solution(x_list, x0, y0)
         dic['Euler Method'] = [fabs(y1 - y2) for y1, y2 in zip(y_list, analytical_solution)]
         _, y_list = improved_euler_method(Variant.func, x0, y0, h, x)
         dic['Improved Euler Method'] = [fabs(y1 - y2) for y1, y2 in zip(y_list, analytical_solution)]
