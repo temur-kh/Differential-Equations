@@ -69,6 +69,14 @@ class ApplicationWindow:
         bar.show()
 
     def update(self, x0, y0, x, h):
+        """
+        Updates the graphs and the table accroding to the given data
+        :param x0: initial position on x-axis
+        :param y0: f(x0)
+        :param x: final position on x-axis
+        :param h: a grid step
+        :return:
+        """
         x0_new, y0_new, x_new, h_new = float(x0.get()), float(y0.get()), float(x.get()), float(h.get())
         if x0_new < x_new and (x_new - x0_new) / h_new <= 10000:
             plt.figure(1).gca().clear()
@@ -81,6 +89,10 @@ class ApplicationWindow:
             self.table.show()
 
     def create_form(self):
+        """
+        Creates the form for changing the initial data
+        :return: None
+        """
         form = tk.Frame(self.root)
 
         x0_label = tk.Label(form, text="x0")
@@ -126,9 +138,19 @@ class ApplicationWindow:
         form.pack(side=tk.BOTTOM, fill=tk.X)
 
     def set_background(self, widgets):
+        """
+        Sets the background color of widgets
+        :param widgets: widgets for changing the bg color
+        :return: None
+        """
         for widget in widgets:
             widget.configure(**self.def_config)
 
     def set_border_background(self, widgets):
+        """
+        Sets the background and border colors of widgets
+        :param widgets: widgets for changing the bg and border colors
+        :return: None
+        """
         for widget in widgets:
             widget.configure(**self.btn_config)

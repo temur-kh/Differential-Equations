@@ -26,14 +26,15 @@ class Variant:
         """
         Get the list of x-values and output y-values using analytical solution
         :param x_list: x-values
-        :param new_x0:
-        :param new_y0:
+        :param new_x0: an initial x value
+        :param new_y0: an initial y value
         :return: y-values
         """
         def solve(x_i, c):
             """
             Analytical solution to the o.d.e.
             :param x_i: x-value
+            :param c: a constant
             :return: y-value
             """
             try:
