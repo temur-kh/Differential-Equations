@@ -26,30 +26,44 @@ class ApplicationWindow:
         graph_tab = Tab(self.root, 'graph')
 
         # Draw a graph and put its figure into a canvas
-        df = draw_graph()
-        self.canvas = FigureCanvasTkAgg(plt.gcf(), master=graph_tab)
-        self.canvas.draw()
-        self.canvas.get_tk_widget().pack(side=tk.TOP,
-                                         fill=tk.BOTH,
-                                         expand=tk.YES)
+        df = draw_graph(ax=plt.figure(1).gca())
+        self.canvas1 = FigureCanvasTkAgg(plt.figure(1), master=graph_tab)
+        self.canvas1.draw()
+        self.canvas1.get_tk_widget().pack(side=tk.TOP,
+                                          fill=tk.BOTH,
+                                          expand=tk.YES)
+
+        # Create the errors tab
+        errors_tab = Tab(self.root, 'errors')
+
+        # Draw an errors graph and put its figure into a canvas
+        draw_graph(ax=plt.figure(2).gca(), graph_type=False)
+        self.canvas2 = FigureCanvasTkAgg(plt.figure(2), master=errors_tab)
+        self.canvas2.draw()
+        self.canvas2.get_tk_widget().pack(side=tk.TOP,
+                                          fill=tk.BOTH,
+                                          expand=tk.YES)
 
         # Create the table tab and put a table inside it
         table_tab = Tab(self.root, 'table')
-        width, height = self.canvas.get_width_height()
+        width, height = self.canvas1.get_width_height()
         self.table = Table(table_tab, dataframe=df, width=width-60, height=height-20, editable=False, cellwidth=188)
         self.table.show()
 
         bar.add(graph_tab)
+        bar.add(errors_tab)
         bar.add(table_tab)
         bar.show()
 
     def update(self, x0, y0, x, h):
-        x0_new, y0_new, x_new, h_new = float(x0.get()), float(y0.get()), float(
-            x.get()), float(h.get())
+        x0_new, y0_new, x_new, h_new = float(x0.get()), float(y0.get()), float(x.get()), float(h.get())
         if x0_new < x_new and (x_new - x0_new) / h_new <= 10000:
-            plt.gca().clear()
-            df = draw_graph(x0_new, y0_new, x_new, h_new, plt.gca())
-            self.canvas.draw()
+            plt.figure(1).gca().clear()
+            plt.figure(2).gca().clear()
+            df = draw_graph(plt.figure(1).gca(), x0_new, y0_new, x_new, h_new)
+            self.canvas1.draw()
+            draw_graph(plt.figure(2).gca(), x0_new, y0_new, x_new, h_new, graph_type=False)
+            self.canvas2.draw()
             self.table.updateModel(TableModel(df))
             self.table.show()
 
