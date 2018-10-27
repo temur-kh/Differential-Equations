@@ -12,7 +12,7 @@ Now you can run the application:
 $ python main.py
 ```
 
-The values of initial conditions are changeable through the form in the window of app. However, to change the differential equation and the analytical solution's function, you need to change the code.
+The values of initial conditions are changeable through the form in the window of app. However, to change the differential equation and the function of the analytical solution, you need to change the code.
 
    [plt]: <https://matplotlib.org/>
    [np]: <http://www.numpy.org/>
