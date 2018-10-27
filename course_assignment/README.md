@@ -1,5 +1,5 @@
 # Differential Equations Course Assignment
-This is a GUI application created on Python with the use of [matplotlib][plt], [numpy][np] and [tkinter][tk] libraries. Using it you can check the graph of function for some specific differential equation. In this project the equation is y'=xy^2-3xy (variant #25).
+This is a GUI application created on Python with the use of [matplotlib][plt], [numpy][np], [pandas][pd], [tkinter][tk] and [pandastable][pdt] libraries. Using it you can check the graph of function for some specific differential equation. In this project the equation is y'=xy^2-3xy (variant #25).
 
 In order to run the application, you should activate the virtual environment located in the venv directory:
 ```sh
@@ -16,4 +16,6 @@ The values of initial conditions are changeable through the form in the window o
 
    [plt]: <https://matplotlib.org/>
    [np]: <http://www.numpy.org/>
+   [pd]: <https://pandas.pydata.org/>
    [tk]: <https://en.wikipedia.org/wiki/Tkinter>
+   [pdt]: <https://github.com/dmnfarrell/pandastable>
