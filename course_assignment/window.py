@@ -4,7 +4,7 @@ import tkinter as tk
 from tkinter_tabs import Tab, TabBar
 from sys import exit
 from variant import Variant
-from plot import draw_graph
+from plot import Plot
 from pandastable import Table, TableModel
 
 
@@ -15,7 +15,8 @@ class ApplicationWindow:
         :param master: the window where the content should be placed
         """
         self.root = master
-        bar = TabBar(self.root, "graph")
+        self.plot = Plot()
+        self.bar = TabBar(self.root, "graph")
         fun_label = tk.Label(self.root, text="Differential Equation: y'=xy^2-3xy", font=("Times New Roman", 30))
         fun_label.pack()
 
@@ -36,7 +37,7 @@ class ApplicationWindow:
         graph_tab = Tab(self.root, 'graph')
 
         # Draw a graph and put its figure into a canvas
-        df = draw_graph(ax=plt.figure(1).gca())
+        df = self.plot.draw_graph(ax=plt.figure(1).gca())
         self.canvas1 = FigureCanvasTkAgg(plt.figure(1), master=graph_tab)
         self.canvas1.draw()
         self.canvas1.get_tk_widget().pack(side=tk.TOP,
@@ -47,7 +48,7 @@ class ApplicationWindow:
         errors_tab = Tab(self.root, 'errors')
 
         # Draw an errors graph and put its figure into a canvas
-        draw_graph(ax=plt.figure(2).gca(), graph_type=False)
+        self.plot.draw_graph(ax=plt.figure(2).gca(), graph_type=False)
         self.canvas2 = FigureCanvasTkAgg(plt.figure(2), master=errors_tab)
         self.canvas2.draw()
         self.canvas2.get_tk_widget().pack(side=tk.TOP,
@@ -61,12 +62,12 @@ class ApplicationWindow:
         self.table.colselectedcolor = self.table.rowselectedcolor = '#40A9CF'
         self.table.show()
 
-        self.set_background([self.root, fun_label, bar, graph_tab, errors_tab, table_tab])
+        self.set_config([self.root, self.bar, fun_label, graph_tab, errors_tab, table_tab], self.def_config)
 
-        bar.add(graph_tab, self.btn_config)
-        bar.add(errors_tab, self.btn_config)
-        bar.add(table_tab, self.btn_config)
-        bar.show()
+        self.bar.add(graph_tab, self.btn_config)
+        self.bar.add(errors_tab, self.btn_config)
+        self.bar.add(table_tab, self.btn_config)
+        self.bar.show()
 
     def update(self, x0, y0, x, h):
         """
@@ -81,9 +82,9 @@ class ApplicationWindow:
         if x0_new < x_new and (x_new - x0_new) / h_new <= 10000:
             plt.figure(1).gca().clear()
             plt.figure(2).gca().clear()
-            df = draw_graph(plt.figure(1).gca(), x0_new, y0_new, x_new, h_new)
+            df = self.plot.draw_graph(plt.figure(1).gca(), x0_new, y0_new, x_new, h_new)
             self.canvas1.draw()
-            draw_graph(plt.figure(2).gca(), x0_new, y0_new, x_new, h_new, graph_type=False)
+            self.plot.draw_graph(plt.figure(2).gca(), x0_new, y0_new, x_new, h_new, graph_type=False)
             self.canvas2.draw()
             self.table.updateModel(TableModel(df))
             self.table.show()
@@ -132,25 +133,18 @@ class ApplicationWindow:
         author = tk.Label(form, text="Author: Temur Kholmatov B17-5")
         author.pack(side=tk.RIGHT, fill=tk.X)
 
-        self.set_background([form, x0_label, y0_label, x_label, h_label, author])
-        self.set_border_background([x0, y0, x, h, btn_plot, btn_quit])
+        self.set_config([form, x0_label, y0_label, x_label, h_label, author], self.def_config)
+        self.set_config([x0, y0, x, h, btn_plot, btn_quit], self.btn_config)
 
         form.pack(side=tk.BOTTOM, fill=tk.X)
 
-    def set_background(self, widgets):
+    @staticmethod
+    def set_config(widgets, config):
         """
-        Sets the background color of widgets
+        Sets the config of widgets
         :param widgets: widgets for changing the bg color
+        :param config: configs to be set for widgets
         :return: None
         """
         for widget in widgets:
-            widget.configure(**self.def_config)
-
-    def set_border_background(self, widgets):
-        """
-        Sets the background and border colors of widgets
-        :param widgets: widgets for changing the bg and border colors
-        :return: None
-        """
-        for widget in widgets:
-            widget.configure(**self.btn_config)
+            widget.configure(**config)
