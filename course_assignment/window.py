@@ -9,6 +9,7 @@ from pandastable import Table, TableModel
 
 
 class ApplicationWindow:
+
     def __init__(self, master):
         """
         Creates the main window with all widgets needed.
@@ -20,13 +21,14 @@ class ApplicationWindow:
         fun_label = tk.Label(self.root, text="Differential Equation: y'=xy^2-3xy", font=("Times New Roman", 30))
         fun_label.pack()
 
+        self.highlight_color = '#40A9CF'
         self.def_config = {
             'background': 'white',
         }
 
         self.btn_config = {
             'background': 'white',
-            'highlightbackground': '#40A9CF',
+            'highlightbackground': self.highlight_color,
             'foreground': 'black',
         }
 
@@ -37,7 +39,7 @@ class ApplicationWindow:
         graph_tab = Tab(self.root, 'graph')
 
         # Draw a graph and put its figure into a canvas
-        df = self.plot.draw_graph(ax=plt.figure(1).gca())
+        df = self.plot.draw_functions(ax=plt.figure(1).gca())
         self.canvas1 = FigureCanvasTkAgg(plt.figure(1), master=graph_tab)
         self.canvas1.draw()
         self.canvas1.get_tk_widget().pack(side=tk.TOP,
@@ -48,7 +50,7 @@ class ApplicationWindow:
         errors_tab = Tab(self.root, 'errors')
 
         # Draw an errors graph and put its figure into a canvas
-        self.plot.draw_graph(ax=plt.figure(2).gca(), graph_type=False)
+        self.plot.draw_errors(ax=plt.figure(2).gca())
         self.canvas2 = FigureCanvasTkAgg(plt.figure(2), master=errors_tab)
         self.canvas2.draw()
         self.canvas2.get_tk_widget().pack(side=tk.TOP,
@@ -59,7 +61,7 @@ class ApplicationWindow:
         table_tab = Tab(self.root, 'table')
         width, height = self.canvas1.get_width_height()
         self.table = Table(table_tab, dataframe=df, width=width-60, height=height-20, editable=False, cellwidth=188)
-        self.table.colselectedcolor = self.table.rowselectedcolor = '#40A9CF'
+        self.table.colselectedcolor = self.table.rowselectedcolor = self.highlight_color
         self.table.show()
 
         self.set_config([self.root, self.bar, fun_label, graph_tab, errors_tab, table_tab], self.def_config)
@@ -76,15 +78,15 @@ class ApplicationWindow:
         :param y0: f(x0)
         :param x: final position on x-axis
         :param h: a grid step
-        :return:
+        :return: None
         """
         x0_new, y0_new, x_new, h_new = float(x0.get()), float(y0.get()), float(x.get()), float(h.get())
         if x0_new < x_new and (x_new - x0_new) / h_new <= 10000:
             plt.figure(1).gca().clear()
             plt.figure(2).gca().clear()
-            df = self.plot.draw_graph(plt.figure(1).gca(), x0_new, y0_new, x_new, h_new)
+            df = self.plot.draw_functions(plt.figure(1).gca(), x0_new, y0_new, x_new, h_new)
             self.canvas1.draw()
-            self.plot.draw_graph(plt.figure(2).gca(), x0_new, y0_new, x_new, h_new, graph_type=False)
+            self.plot.draw_errors(plt.figure(2).gca(), x0_new, y0_new, x_new, h_new)
             self.canvas2.draw()
             self.table.updateModel(TableModel(df))
             self.table.show()
