@@ -8,17 +8,17 @@ from plot import Plot
 from pandastable import Table, TableModel
 
 
-class ApplicationWindow:
+class ApplicationWindow(tk.Frame):
 
     def __init__(self, master):
         """
         Creates the main window with all widgets needed.
         :param master: the window where the content should be placed
         """
-        self.root = master
+        tk.Frame.__init__(self, master)
         self.plot = Plot()
-        self.bar = TabBar(self.root, "graph")
-        fun_label = tk.Label(self.root, text="Differential Equation: y'=xy^2-3xy", font=("Times New Roman", 30))
+        self.bar = TabBar(self, "graph")
+        fun_label = tk.Label(self, text="Differential Equation: y'=xy^2-3xy", font=("Times New Roman", 30))
         fun_label.pack()
 
         self.highlight_color = '#40A9CF'
@@ -36,7 +36,7 @@ class ApplicationWindow:
         self.create_form()
 
         # Create the graph tab
-        graph_tab = Tab(self.root, 'graph')
+        graph_tab = Tab(self, 'graph')
 
         # Draw a graph and put its figure into a canvas
         df = self.plot.draw_functions(ax=plt.figure(1).gca())
@@ -47,7 +47,7 @@ class ApplicationWindow:
                                           expand=tk.YES)
 
         # Create the errors tab
-        errors_tab = Tab(self.root, 'errors')
+        errors_tab = Tab(self, 'errors')
 
         # Draw an errors graph and put its figure into a canvas
         self.plot.draw_errors(ax=plt.figure(2).gca())
@@ -58,20 +58,21 @@ class ApplicationWindow:
                                           expand=tk.YES)
 
         # Create the table tab and put a table inside it
-        table_tab = Tab(self.root, 'table')
+        table_tab = Tab(self, 'table')
         width, height = self.canvas1.get_width_height()
         self.table = Table(table_tab, dataframe=df, width=width-60, height=height-20, editable=False, cellwidth=188)
         self.table.colselectedcolor = self.table.rowselectedcolor = self.highlight_color
         self.table.show()
 
-        self.set_config([self.root, self.bar, fun_label, graph_tab, errors_tab, table_tab], self.def_config)
+        self.set_config([self, self.bar, fun_label, graph_tab, errors_tab, table_tab], self.def_config)
 
+        # Add tabs to the tab bar
         self.bar.add(graph_tab, self.btn_config)
         self.bar.add(errors_tab, self.btn_config)
         self.bar.add(table_tab, self.btn_config)
         self.bar.show()
 
-    def update(self, x0, y0, x, h):
+    def update_window(self, x0, y0, x, h):
         """
         Updates the graphs and the table accroding to the given data
         :param x0: initial position on x-axis
@@ -81,7 +82,7 @@ class ApplicationWindow:
         :return: None
         """
         x0_new, y0_new, x_new, h_new = float(x0.get()), float(y0.get()), float(x.get()), float(h.get())
-        if x0_new < x_new and (x_new - x0_new) / h_new <= 10000:
+        if x0_new < x_new and h_new > 0 and (x_new - x0_new) / h_new <= 10000:
             plt.figure(1).gca().clear()
             plt.figure(2).gca().clear()
             df = self.plot.draw_functions(plt.figure(1).gca(), x0_new, y0_new, x_new, h_new)
@@ -96,7 +97,7 @@ class ApplicationWindow:
         Creates the form for changing the initial data
         :return: None
         """
-        form = tk.Frame(self.root)
+        form = tk.Frame(self)
 
         x0_label = tk.Label(form, text="x0")
         x0_label.pack()
@@ -126,7 +127,7 @@ class ApplicationWindow:
         h.insert(tk.END, str(Variant.h))
         h.pack()
 
-        btn_plot = tk.Button(master=form, text='Plot', command=lambda: self.update(x0, y0, x, h))
+        btn_plot = tk.Button(master=form, text='Plot', command=lambda: self.update_window(x0, y0, x, h))
         btn_plot.pack()
 
         btn_quit = tk.Button(master=form, text='Quit', command=exit)

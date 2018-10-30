@@ -19,6 +19,7 @@ class Plot:
         :param ax: object of class matplotlib.axes.Axes
         :return: pd.DataFrame object
         """
+        # Construct the data table
         dic = OrderedDict()
         x_list, y_list = self.methods.euler_method(Variant.func, x0, y0, h, x)
         dic['x'] = x_list
@@ -32,6 +33,7 @@ class Plot:
         df = pd.DataFrame(dic)
         df.fillna(0, inplace=True)
 
+        # Plot the graph according to the data table
         df.plot(x='x', y='Analytical Solution', color='Yellow', figsize=(10, 5), ax=ax)
         df.plot(x='x', y='Euler Method', color='Blue', figsize=(10, 5), ax=ax)
         df.plot(x='x', y='Improved Euler Method', color='Red', ax=ax)
@@ -48,6 +50,7 @@ class Plot:
         :param ax: object of class matplotlib.axes.Axes
         :return: pd.DataFrame object
         """
+        # Construct the data table
         dic = OrderedDict()
         x_list, y_list = self.methods.euler_method(Variant.func, x0, y0, h, x)
         dic['x'] = x_list
@@ -61,6 +64,7 @@ class Plot:
         df = pd.DataFrame(dic)
         df.fillna(0, inplace=True)
 
+        # Plot the graph according to the data table
         df.plot(x='x', y='Euler Method', color='Blue', figsize=(10, 5), ax=ax)
         df.plot(x='x', y='Improved Euler Method', color='Red', ax=ax)
         df.plot(x='x', y='Runge-Kuffa Method', color='LightGreen', ax=ax)
