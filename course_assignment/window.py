@@ -9,7 +9,6 @@ from pandastable import Table, TableModel
 
 
 class ApplicationWindow(tk.Frame):
-
     def __init__(self, master):
         """
         Creates the main window with all widgets needed.
