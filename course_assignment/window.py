@@ -16,21 +16,19 @@ class ApplicationWindow(tk.Frame):
         :param master: the window where the content should be placed
         """
         tk.Frame.__init__(self, master)
-        self.plot = Plot()
-        self.bar = TabBar(self, "graph")
-        fun_label = tk.Label(self, text="Differential Equation: y'=xy^2-3xy", font=("Times New Roman", 30))
-        fun_label.pack()
-
         self.highlight_color = '#40A9CF'
-        self.def_config = {
-            'background': 'white',
-        }
-
         self.btn_config = {
             'background': 'white',
             'highlightbackground': self.highlight_color,
             'foreground': 'black',
         }
+        self.default_config = {
+            'background': 'white',
+        }
+        self.plot = Plot()
+        self.bar = TabBar(self, "graph")
+        fun_label = tk.Label(self, text="Differential Equation: y'=xy^2-3xy", font=("Times New Roman", 30))
+        fun_label.pack()
 
         # Create the form
         self.create_form()
@@ -64,7 +62,7 @@ class ApplicationWindow(tk.Frame):
         self.table.colselectedcolor = self.table.rowselectedcolor = self.highlight_color
         self.table.show()
 
-        self.set_config([self, self.bar, fun_label, graph_tab, errors_tab, table_tab], self.def_config)
+        self.set_config([self, self.bar, fun_label, graph_tab, errors_tab, table_tab], self.default_config)
 
         # Add tabs to the tab bar
         self.bar.add(graph_tab, self.btn_config)
@@ -136,7 +134,7 @@ class ApplicationWindow(tk.Frame):
         author = tk.Label(form, text="Author: Temur Kholmatov B17-5")
         author.pack(side=tk.RIGHT, fill=tk.X)
 
-        self.set_config([form, x0_label, y0_label, x_label, h_label, author], self.def_config)
+        self.set_config([form, x0_label, y0_label, x_label, h_label, author], self.default_config)
         self.set_config([x0, y0, x, h, btn_plot, btn_quit], self.btn_config)
 
         form.pack(side=tk.BOTTOM, fill=tk.X)
