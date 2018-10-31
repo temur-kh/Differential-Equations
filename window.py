@@ -47,7 +47,7 @@ class ApplicationWindow(tk.Frame):
         errors_tab = Tab(self, 'errors')
 
         # Draw an errors graph and put its figure into a canvas
-        self.plot.draw_errors(ax=plt.figure(2).gca())
+        self.plot.draw_local_errors(ax=plt.figure(2).gca())
         self.canvas2 = FigureCanvasTkAgg(plt.figure(2), master=errors_tab)
         self.canvas2.draw()
         self.canvas2.get_tk_widget().pack(side=tk.TOP,
@@ -84,7 +84,7 @@ class ApplicationWindow(tk.Frame):
             plt.figure(2).gca().clear()
             df = self.plot.draw_functions(plt.figure(1).gca(), x0_new, y0_new, x_new, h_new)
             self.canvas1.draw()
-            self.plot.draw_errors(plt.figure(2).gca(), x0_new, y0_new, x_new, h_new)
+            self.plot.draw_local_errors(plt.figure(2).gca(), x0_new, y0_new, x_new, h_new)
             self.canvas2.draw()
             self.table.updateModel(TableModel(df))
             self.table.show()
