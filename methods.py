@@ -37,7 +37,9 @@ class Methods:
         y_list = [y0]
         for _ in np.arange(x0 + h, X + h, h):
             x = x_list[-1] + h
-            delta_y = h * func(x_list[-1] + h / 2, y_list[-1] + h / 2 * func(x_list[-1], y_list[-1]))
+            k1 = func(x_list[-1], y_list[-1])
+            k2 = func(x_list[-1] + h, y_list[-1] + h * k1)
+            delta_y = h * (k1 + k2) / 2
             y = y_list[-1] + delta_y
             x_list.append(round(x, 5))
             y_list.append(y)
@@ -62,7 +64,7 @@ class Methods:
             k2 = func(x_list[-1] + h / 2, y_list[-1] + h / 2 * k1)
             k3 = func(x_list[-1] + h / 2, y_list[-1] + h / 2 * k2)
             k4 = func(x_list[-1] + h, y_list[-1] + h * k3)
-            delta_y = h / 6 * (k1 + 2 * k2 + 2 * k3 + k4)
+            delta_y = h * (k1 + 2 * k2 + 2 * k3 + k4) / 6
             y = y_list[-1] + delta_y
             x_list.append(round(x, 5))
             y_list.append(y)
