@@ -43,14 +43,25 @@ class ApplicationWindow(tk.Frame):
                                           fill=tk.BOTH,
                                           expand=tk.YES)
 
-        # Create the errors tab
-        errors_tab = Tab(self, 'errors')
+        # Create the local errors tab
+        local_errors_tab = Tab(self, 'local errors')
 
         # Draw an errors graph and put its figure into a canvas
         self.plot.draw_local_errors(ax=plt.figure(2).gca())
-        self.canvas2 = FigureCanvasTkAgg(plt.figure(2), master=errors_tab)
+        self.canvas2 = FigureCanvasTkAgg(plt.figure(2), master=local_errors_tab)
         self.canvas2.draw()
         self.canvas2.get_tk_widget().pack(side=tk.TOP,
+                                          fill=tk.BOTH,
+                                          expand=tk.YES)
+
+        # Create the errors tab
+        total_errors_tab = Tab(self, 'total errors')
+
+        # Draw an errors graph and put its figure into a canvas
+        self.plot.draw_approximation_errors(ax=plt.figure(3).gca())
+        self.canvas3 = FigureCanvasTkAgg(plt.figure(3), master=total_errors_tab)
+        self.canvas3.draw()
+        self.canvas3.get_tk_widget().pack(side=tk.TOP,
                                           fill=tk.BOTH,
                                           expand=tk.YES)
 
@@ -61,11 +72,12 @@ class ApplicationWindow(tk.Frame):
         self.table.colselectedcolor = self.table.rowselectedcolor = self.highlight_color
         self.table.show()
 
-        self.set_config([self, self.bar, fun_label, graph_tab, errors_tab, table_tab], self.default_config)
+        self.set_config([self, self.bar, fun_label, graph_tab, local_errors_tab, total_errors_tab, table_tab], self.default_config)
 
         # Add tabs to the tab bar
         self.bar.add(graph_tab, self.btn_config)
-        self.bar.add(errors_tab, self.btn_config)
+        self.bar.add(local_errors_tab, self.btn_config)
+        self.bar.add(total_errors_tab, self.btn_config)
         self.bar.add(table_tab, self.btn_config)
         self.bar.show()
 
@@ -82,10 +94,13 @@ class ApplicationWindow(tk.Frame):
         if x0_new < x_new and h_new > 0 and (x_new - x0_new) / h_new <= 10000:
             plt.figure(1).gca().clear()
             plt.figure(2).gca().clear()
+            plt.figure(3).gca().clear()
             df = self.plot.draw_functions(plt.figure(1).gca(), x0_new, y0_new, x_new, h_new)
             self.canvas1.draw()
             self.plot.draw_local_errors(plt.figure(2).gca(), x0_new, y0_new, x_new, h_new)
             self.canvas2.draw()
+            self.plot.draw_approximation_errors(plt.figure(3).gca(), x0_new, y0_new, x_new)
+            self.canvas3.draw()
             self.table.updateModel(TableModel(df))
             self.table.show()
 

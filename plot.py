@@ -10,10 +10,10 @@ class Plot:
         self.n_column = 'N'
         self.columns = ['Analytical Solution', 'Euler Method', 'Improved Euler Method', 'Runge-Kuffa Method']
         self.column_colors = {
-            'Analytical Solution': 'Yellow',
+            'Analytical Solution': 'Violet',
             'Euler Method': 'Blue',
             'Improved Euler Method': 'Red',
-            'Runge-Kuffa Method': 'LightGreen'
+            'Runge-Kuffa Method': 'Green'
         }
 
     def draw_functions(self, ax, x0=Variant.x0, y0=Variant.y0, x=Variant.x, h=Variant.h):
@@ -30,6 +30,7 @@ class Plot:
         df = self.__get_results(x0, y0, x, h)
         self.__plot_analytical_solution(df, self.x_column, ax)
         self.__plot_numerical_solutions(df, self.x_column, ax)
+        ax.set_ylabel('f(x)')
         return df[[self.x_column] + self.columns]
 
     def draw_local_errors(self, ax, x0=Variant.x0, y0=Variant.y0, x=Variant.x, h=Variant.h):
@@ -45,6 +46,7 @@ class Plot:
         # Plot the graph according to the data table
         df = self.__get_local_errors(x0, y0, x, h)
         self.__plot_numerical_solutions(df, self.x_column, ax)
+        ax.set_ylabel('e(x)')
         return df
 
     def draw_approximation_errors(self, ax, x0=Variant.x0, y0=Variant.y0, x=Variant.x):
@@ -59,11 +61,13 @@ class Plot:
         # Plot the graph according to the data table
         df = self.__get_approximation_errors(x0, y0, x)
         self.__plot_numerical_solutions(df, self.n_column, ax)
+        ax.set_xlabel('N')
+        ax.set_ylabel('e(N)')
         return df
 
     def __get_approximation_errors(self, x0, y0, x):
         df = pd.DataFrame(columns=[self.n_column] + self.columns)
-        for n in range(1, 1002, 50):
+        for n in range(50, 1001, 50):
             h = (x - x0) / n
             n_df = pd.DataFrame([n], columns=[self.n_column])
             max_vals = self.__get_local_errors(x0, y0, x, h).max(axis=0)
