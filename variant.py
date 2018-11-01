@@ -19,7 +19,7 @@ class Variant:
         try:
             return x * (y ** 2) - 3 * x * y
         except OverflowError:
-            return float('inf')
+            return 0
 
     @staticmethod
     def solution(x_list, new_x0=x0, new_y0=y0):
@@ -42,7 +42,10 @@ class Variant:
             except OverflowError:
                 return 0.0
 
-        c = (3.0 / new_y0 - 1) / e ** (3 * (new_x0 ** 2) / 2.0)
+        try:
+            c = (3.0 / new_y0 - 1) / e ** (3 * (new_x0 ** 2) / 2.0)
+        except ZeroDivisionError:
+            c = float('inf')
         y_list = []
         for x in x_list:
             y_list.append(solve(x, c))

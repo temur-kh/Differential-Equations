@@ -91,7 +91,7 @@ class ApplicationWindow(tk.Frame):
         :return: None
         """
         x0_new, y0_new, x_new, h_new = float(x0.get()), float(y0.get()), float(x.get()), float(h.get())
-        if x0_new < x_new and h_new > 0 and (x_new - x0_new) / h_new <= 10000:
+        if x0_new < x_new and h_new > 0 and y0_new > 0 and (x_new - x0_new) / h_new <= 10000:
             plt.figure(1).gca().clear()
             plt.figure(2).gca().clear()
             plt.figure(3).gca().clear()
