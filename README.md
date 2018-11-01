@@ -5,11 +5,19 @@ Clone this repository to your machine using [Git][git]:
 ```sh
 $ git clone https://github.com/temur-kh/Differential-Equations.git
 ```
-In order to run the application, you should activate the virtual environment located in the venv directory:
+
+In oder to run the application, you should install all required packages. You can do it (not necessary step) 
+primarily creating and activating a virtual environment:
 ```sh
+$ pip install virtualenv
+$ virtualenv venv
 $ source venv/bin/activate
 ```
-You don't need to install any packages. Everything that is needed is already in the virtual environment.
+
+Install all requirements from requirements.txt file:
+```sh
+$ pip install -r requirements.txt
+```
 
 Now you can run the application:
 ```sh
