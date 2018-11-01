@@ -61,7 +61,6 @@ class Plot:
         # Plot the graph according to the data table
         df = self.__get_approximation_errors(x0, y0, x)
         self.__plot_numerical_solutions(df, self.n_column, ax)
-        ax.set_xlabel('N')
         ax.set_ylabel('e(N)')
         return df
 
