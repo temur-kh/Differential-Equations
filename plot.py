@@ -65,7 +65,15 @@ class Plot:
         return df
 
     def __get_approximation_errors(self, x0, y0, x):
+        """
+        Return pd.DataFrame object of the total approximation errors of numerical methods
+        :param x0: initial position on x-axis
+        :param y0: f(x0)
+        :param x: final position on x-axis
+        :return: pd.DateFrame object
+        """
         df = pd.DataFrame(columns=[self.n_column] + self.columns)
+        # find total approximate errors for N starting from 50 till 1000 with step 50
         for n in range(50, 1001, 50):
             h = (x - x0) / n
             n_df = pd.DataFrame([n], columns=[self.n_column])
@@ -76,11 +84,28 @@ class Plot:
         return df
 
     def __get_local_errors(self, x0, y0, x, h):
+        """
+        Return pd.DataFrame object of the local errors of numerical methods
+        :param x0: initial position on x-axis
+        :param y0: f(x0)
+        :param x: final position on x-axis
+        :param h: a grid step
+        :return: pd.DateFrame object
+        """
         df = self.__get_results(x0, y0, x, h)
+        # subtract analytical solution's results from numerical solutions' results
         df.update(df[self.columns].rsub(df[self.columns[0]], 0).abs())
         return df
 
     def __get_results(self, x0, y0, x, h):
+        """
+        Return pd.DataFrame object of the results of numerical methods and the analytical solution
+        :param x0: initial position on x-axis
+        :param y0: f(x0)
+        :param x: final position on x-axis
+        :param h: a grid step
+        :return: pd.DateFrame object
+        """
         dic = dict()
         x_list, y_list = self.methods.euler_method(Variant.func, x0, y0, h, x)
         dic[self.x_column] = x_list
@@ -95,9 +120,23 @@ class Plot:
         return df
 
     def __plot_analytical_solution(self, df, x_axis, ax):
+        """
+        Plot function of the analytical solution
+        :param df: pd.DataFrame object to plot on
+        :param x_axis: a string hot to call the x-axis
+        :param ax: object of class matplotlib.axes.Axes
+        :return: None
+        """
         df.plot(x=x_axis, y=self.columns[0], color=self.column_colors[self.columns[0]], ax=ax)
 
     def __plot_numerical_solutions(self, df, x_axis, ax):
+        """
+        Plot function of the numerical methods' results
+        :param df: pd.DataFrame object to plot on
+        :param x_axis: a string hot to call the x-axis
+        :param ax: object of class matplotlib.axes.Axes
+        :return: None
+        """
         df.plot(x=x_axis, y=self.columns[1], color=self.column_colors[self.columns[1]],
                 figsize=(10, 5), ax=ax)
         df.plot(x=x_axis, y=self.columns[2], color=self.column_colors[self.columns[2]], ax=ax)

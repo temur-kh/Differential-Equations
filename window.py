@@ -54,7 +54,7 @@ class ApplicationWindow(tk.Frame):
                                           fill=tk.BOTH,
                                           expand=tk.YES)
 
-        # Create the errors tab
+        # Create the total approximation errors tab
         total_errors_tab = Tab(self, 'total errors')
 
         # Draw an errors graph and put its figure into a canvas
@@ -72,7 +72,8 @@ class ApplicationWindow(tk.Frame):
         self.table.colselectedcolor = self.table.rowselectedcolor = self.highlight_color
         self.table.show()
 
-        self.set_config([self, self.bar, fun_label, graph_tab, local_errors_tab, total_errors_tab, table_tab], self.default_config)
+        self.set_config([self, self.bar, fun_label, graph_tab, local_errors_tab, total_errors_tab, table_tab],
+                        self.default_config)
 
         # Add tabs to the tab bar
         self.bar.add(graph_tab, self.btn_config)
