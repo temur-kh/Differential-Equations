@@ -6,7 +6,7 @@ Clone this repository to your machine using [Git][git]:
 $ git clone https://github.com/temur-kh/Differential-Equations.git
 ```
 
-In oder to run the application, you should install all required packages. You can do it (not necessary step) 
+In order to run the application, you should install all required packages. You can do it (not necessary step) 
 primarily creating and activating a virtual environment:
 ```sh
 $ pip install virtualenv
